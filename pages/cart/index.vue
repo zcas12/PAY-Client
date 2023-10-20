@@ -12,7 +12,7 @@
     </div>
     <el-table
       ref="multipleTable"
-      :data="tableData"
+      :data="cartList"
       @selection-change="handleSelectionChange"
     >
       <el-table-column
@@ -20,7 +20,7 @@
         width="55">
       </el-table-column>
       <el-table-column
-        prop="productInfo"
+        prop="name"
         label="상품 정보"
       >
       </el-table-column>
@@ -44,16 +44,16 @@
         <button type="button" id="soldOutDelBtn1"><span>품절상품 삭제</span></button>
       </div>
       <div class="sum-price">총 판매가
-        <span class="tx_num">64,000</span>원
-        <span class="tx_sign minus">-</span>총 할인금액
-        <span class="tx_num">19,000</span>원
+        <span class="tx_num">{{ selectPrice | comma }}</span>원
+<!--        <span class="tx_sign minus">-</span>총 할인금액
+        <span class="tx_num">19,000</span>원-->
         <span class="tx_sign plus">+</span> 배송비
-        <span class="tx_num">0</span>원
+        <span class="tx_num">2,500</span>원
         <span class="span_quickDeliCharge" style="display:none;">(3!4!, 미드나잇 이용시)</span>
         <span class="tx_sign equal">=</span>
         <span class="total-price">총 결제금액
           <span class="tx_price">
-          <span class="tx_num">45,000</span>
+          <span class="tx_num">{{ totalPrice | comma }}</span>
             원
           </span>
         </span>
@@ -70,6 +70,7 @@
   </el-container>
 </template>
 <script>
+import {mapGetters} from "vuex"
 export default {
   data() {
     return {
@@ -105,10 +106,23 @@ export default {
       multipleSelection: []
     }
   },
+  filters:{
+    comma(val){
+      return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+  },
   computed:{
+    ...mapGetters('cart',['cartList']),
     selectProduct(){
       return this.multipleSelection?.length
     },
+    selectPrice(){
+      const totalPrice = this.$_.map(this.multipleSelection, 'totalPrice')
+      return this.$_.reduce(totalPrice, (acc, n) => acc + n, 0);
+    },
+    totalPrice(){
+      return this.selectPrice + 2500
+    }
   },
   methods:{
     handleSelectionChange(val) {

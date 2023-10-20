@@ -57,12 +57,14 @@
       <button
         type="button"
         class="btnBasket goods_cart"
+        @click="addToCart()"
       >
         장바구니
       </button>
       <button
         type="button"
         class="btnBuy goods_buy"
+        @click="purchase()"
       >
         바로구매
       </button>
@@ -72,6 +74,7 @@
   </div>
 </template>
 <script lang="js">
+import {mapMutations} from "vuex";
 export default {
   props:{
     prd: {
@@ -98,7 +101,23 @@ export default {
     }
   },
   methods:{
-
+    ...mapMutations('cart',['setCartList']),
+    addToCart(){
+      const param = {
+        id: this.prd.id,
+        code: this.prd.code,
+        brand: this.prd.brand,
+        name: this.prd.name,
+        quantity: this.num,
+        price: this.prd.price,
+        totalPrice: this.totalPrice,
+        shippingInfo: '일반배송'
+      }
+      this.setCartList(param)
+    },
+    purchase(){
+      this.$router.push({name:"cart"})
+    }
   }
 }
 </script>
