@@ -3,6 +3,7 @@
     <div class="prd_thumb goodsList" @click="prdDetail(prd)">
       <img alt="제품 사진" :src="prd.src"/>
     </div>
+    <!--브랜드 & 상품 명-->
     <div class="prd_name" @click="prdDetail(prd)">
       <span class="tx_brand">
         {{ prd.brand }}
@@ -11,6 +12,7 @@
         {{ prd.name  }}
       </p>
     </div>
+    <!--상품 금액-->
     <p class="prd_price">
       <span class="tx_cur">
         <span class="tx_num">{{prd.price | comma}}</span>

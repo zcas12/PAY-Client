@@ -1,17 +1,20 @@
 <template>
   <div class="prd_info">
+    <!--브랜드 & 상품 명-->
     <p class="prd_brand">
       {{ prd.brand }}
     </p>
     <p class="prd_name">
       {{ prd.name }}
     </p>
+    <!--상품 가격-->
     <div class="price">
       <span class="price-1">
         <strong>{{prd.price | comma}}</strong>
         <span>원</span>
       </span>
     </div>
+    <!--배송 정보-->
     <div class="prd_more_info">
       <div class="row">
         <p class="tit">배송정보</p>
@@ -34,6 +37,7 @@
         </ul>
       </div>
     </div>
+    <!--구매 수량-->
     <div class="option_add_area">
       <div class="prd_cnt_box">
         <div class="tit_area">
@@ -47,6 +51,7 @@
         </div>
       </div>
     </div>
+    <!--금액 * 수량-->
     <div class="prd_total_price">
       <span class="tx_tit">상품금액 합계</span>
       <span class="tx_cont">
