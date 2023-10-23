@@ -14,7 +14,9 @@
         </div>
       </div>
       <ul class="my-menu-area">
-        <li>마이 메뉴</li>
+        <nuxt-link to="/cart">
+          <li>장바구니</li>
+        </nuxt-link>
         <li></li>
       </ul>
     </div>
@@ -80,6 +82,16 @@ export default {
         height: 65px;
         padding-top: 20px;
         width: 100px;
+      }
+      li:before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 22px;
+        right: 0;
+        width: 1px;
+        height: 18px;
+        background: #d6d6d6;
       }
     }
 
