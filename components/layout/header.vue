@@ -1,8 +1,10 @@
 <template>
   <header id="header">
     <div class="header-wrap">
-      <h1 id="global-logo" style="background: #6f778b" class="w-250p h-50p">
-        로고
+      <h1 id="global-logo" class="w-250p h-50p">
+        <el-image
+          :src="logo"
+          fit="cover"></el-image>
       </h1>
       <div class="search_box" >
         <div class="flex align-center justify-center">
@@ -22,11 +24,13 @@
   </header>
 </template>
 <script>
+import Logo from '@/static/kcp-logo.svg';
 export default {
   name:"layoutHeader",
   data(){
     return {
-      input:""
+      input:"",
+      logo: Logo
     }
   }
 }
@@ -46,7 +50,7 @@ export default {
     background: antiquewhite;
     h1{
       float: left;
-      margin-top: 20px;
+      margin-top: 30px;
     }
     .search_box{
       float: left;
