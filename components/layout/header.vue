@@ -2,9 +2,13 @@
   <header id="header">
     <div class="header-wrap">
       <h1 id="global-logo" class="w-250p h-50p">
-        <el-image
-          :src="logo"
-          fit="cover"></el-image>
+        <nuxt-link to="/menu1">
+          <el-image
+            :src="logo"
+            fit="cover"
+          >
+          </el-image>
+        </nuxt-link>
       </h1>
       <div class="search_box" >
         <div class="flex align-center justify-center">
@@ -14,9 +18,7 @@
         </div>
       </div>
       <ul class="my-menu-area">
-        <nuxt-link to="/cart">
-          <li>장바구니</li>
-        </nuxt-link>
+        <li><nuxt-link to="/cart">장바구니</nuxt-link></li>
         <li></li>
       </ul>
     </div>
