@@ -79,7 +79,7 @@
   </div>
 </template>
 <script lang="js">
-import {mapMutations} from "vuex";
+import {mapGetters, mapMutations} from "vuex";
 export default {
   props:{
     prd: {
@@ -100,14 +100,16 @@ export default {
     }
   },
   computed:{
+    ...mapGetters('cart',['cartList']),
     totalPrice(){
       const result = this.prd?.price * this.num
       return result ? result : 0
     }
   },
   methods:{
-    ...mapMutations('cart',['setCartList']),
+    ...mapMutations('cart',['setCartList','addCart']),
     addToCart(){
+      const chk = this.$_.findIndex(this.cartList,{'id' : this.prd.id})
       const param = {
         id: this.prd.id,
         code: this.prd.code,
@@ -115,10 +117,14 @@ export default {
         name: this.prd.name,
         quantity: this.num,
         price: this.prd.price,
-        totalPrice: this.totalPrice,
         shippingInfo: '일반배송'
       }
-      this.setCartList(param)
+      if(chk < 0){
+        this.setCartList(param)
+      }else{
+        this.addCart(param)
+      }
+      alert("장바구니에 추가했습니다.")
     },
     purchase(){
       this.$router.push({name:"cart"})

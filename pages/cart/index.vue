@@ -12,7 +12,7 @@
     </div>
     <el-table
       ref="multipleTable"
-      :data="cartList"
+      :data="tableList"
       @selection-change="handleSelectionChange"
     >
       <el-table-column
@@ -28,10 +28,18 @@
         prop="price"
         label="판매가"
       >
+        <template slot-scope="scope">{{ scope.row.price | comma}}</template>
       </el-table-column>
       <el-table-column
         prop="quantity"
         label="수량">
+        <template slot-scope="scope">
+          <el-input-number
+            size="mini"
+            v-model="scope.row.quantity"
+          >
+          </el-input-number>
+        </template>
       </el-table-column>
       <el-table-column
         prop="shippingInfo"
@@ -40,16 +48,13 @@
     </el-table>
     <div class="price-info">
       <div class="btn-area">
-        <button type="button" id="partDelBtn1"><span>선택상품 삭제</span></button>
-        <button type="button" id="soldOutDelBtn1"><span>품절상품 삭제</span></button>
+        <button type="button" id="partDelBtn1" @click="deleteSelection()"><span>선택상품 삭제</span></button>
+<!--        <button type="button" id="soldOutDelBtn1"><span>품절상품 삭제</span></button>-->
       </div>
       <div class="sum-price">총 판매가
         <span class="tx_num">{{ selectPrice | comma }}</span>원
-<!--        <span class="tx_sign minus">-</span>총 할인금액
-        <span class="tx_num">19,000</span>원-->
         <span class="tx_sign plus">+</span> 배송비
-        <span class="tx_num">2,500</span>원
-        <span class="span_quickDeliCharge" style="display:none;">(3!4!, 미드나잇 이용시)</span>
+        <span class="tx_num">{{ deliveryFee | comma }}</span>원
         <span class="tx_sign equal">=</span>
         <span class="total-price">총 결제금액
           <span class="tx_price">
@@ -63,14 +68,14 @@
       <button type="button" class="part-order-btn" @click="selectionPurchase()">
         선택주문({{selectProduct}})
       </button>
-      <button type="button" class="all-order-btn">
+      <button type="button" class="all-order-btn"  @click="totalPurchase()">
         전체주문
       </button>
     </div>
   </el-container>
 </template>
 <script>
-import {mapGetters} from "vuex"
+import {mapGetters,mapMutations} from "vuex";
 export default {
   data() {
     return {
@@ -80,28 +85,6 @@ export default {
         {label:"수량", prop:"quantity"},
         {label:"배송 정보", prop:"shippingInfo"},
         {label:"선택", prop:"actions"},
-      ],tableData: [
-        {
-          productInfo: '탄력 크림',
-          price: 2000,
-          quantity: 3,
-          shippingInfo: '일반배송'
-        }, {
-          productInfo: '쿨 스테이지',
-          price: 3000,
-          quantity: 1,
-          shippingInfo: '일반배송'
-        }, {
-          productInfo: '토너',
-          price: 12000,
-          quantity: 1,
-          shippingInfo: '일반배송'
-        }, {
-          productInfo: '브러쉬',
-          price: 5000,
-          quantity: 3,
-          shippingInfo: '일반배송'
-        }
       ],
       multipleSelection: []
     }
@@ -113,23 +96,48 @@ export default {
   },
   computed:{
     ...mapGetters('cart',['cartList']),
+    tableList(){
+      return this.$_.cloneDeep(this.cartList)
+    },
+    /* 선택된 상품 갯수*/
     selectProduct(){
       return this.multipleSelection?.length
     },
+    /* 선택된 상품 가격*/
     selectPrice(){
-      const totalPrice = this.$_.map(this.multipleSelection, 'totalPrice')
-      return this.$_.reduce(totalPrice, (acc, n) => acc + n, 0);
+      const price = this.$_.map(this.multipleSelection, (selection)=>{
+        return selection.price * selection.quantity
+      })
+      return this.$_.reduce(price, (acc, n) => acc + n, 0);
     },
+    /*배송비*/
+    deliveryFee(){
+      return this.selectPrice ? 2500 : 0
+    },
+    /* 선택된 상품 가격 + 배송비*/
     totalPrice(){
-      return this.selectPrice + 2500
+      return this.selectPrice > 0 ? this.selectPrice + this.deliveryFee : 0
     }
   },
   methods:{
+    ...mapMutations('cart',['deleteCart']),
+    /*테이블 셀렉트 이벤트*/
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
+    /*선택 구매버튼*/
     selectionPurchase(){
       console.log(this.multipleSelection)
+    },
+    /*전체 구매*/
+    totalPurchase(){
+      console.log(this.tableList)
+    },
+    /*선택 삭제*/
+    deleteSelection(){
+      this.multipleSelection.forEach((val)=>{
+        this.deleteCart(val)
+      })
     }
   }
 }
@@ -194,9 +202,6 @@ export default {
       width: 10px;
       height: 10px;
     }
-    .tx_sign.minus{
-      background-position: 0 50%;
-    }
     .total-price{
       font-size: 14px;
       color: #f27370;
@@ -204,7 +209,7 @@ export default {
   }
 }
 .order-btn-area{
-  margin: 30px 0 0;
+  margin: 20px 0 20px 0;
   text-align: center;
   .part-order-btn{
     font-size: 16px;
