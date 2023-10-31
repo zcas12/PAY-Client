@@ -14,14 +14,19 @@
 <script>
 import {mapGetters} from "vuex"
 export default {
+  async asyncData({query}){
+  },
   computed:{
-    ...mapGetters('product',['cosmetics'])
+    ...mapGetters('product',['cosmetics']),
+    code(){
+      return this.$route.query.code;
+    },
   },
 }
 </script>
 <style lang="scss" scoped>
 .cate_prd_list{
-  border-top: 5px solid #e5e5e5;
+  border-top: 5px solid #FFF;
   border-bottom: 1px solid #ddd;
   li{
     position: relative;
