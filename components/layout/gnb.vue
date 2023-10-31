@@ -20,7 +20,7 @@ export default {
         {title:"전체", url:"product", code:'total'},
         {title:"스킨케어", url:"product", code:'skin'},
         {title:"클렌징", url:"product", code:'cleansing'},
-        {title:"샴푸/린스", url:"product", code:'shampoo'},
+        {title:"메이크업", url:"product", code:'makeup'},
         {title:"트리트먼트/팩", url:"product", code:'treatments'},
       ]
 

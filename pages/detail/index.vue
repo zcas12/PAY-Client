@@ -56,8 +56,8 @@ export default {
       position: relative;
       text-align: center;
       img{
-        max-width: 510px;
-        max-height: 510px;
+        max-width: 400px;
+        max-height: 400px;
         width: auto!important;
         height: auto!important;
       }

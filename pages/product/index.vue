@@ -2,7 +2,7 @@
   <el-container class="contents">
     <ul class="cate_prd_list">
       <li
-        v-for="(prd, index) in cosmetics"
+        v-for="(prd, index) in product"
         :key="index"
         class="flag">
           <product :prd="prd"/>
@@ -21,6 +21,15 @@ export default {
     code(){
       return this.$route.query.code;
     },
+    product(){
+      if (this.code === 'total' || !this.code){
+        return this.$_.cloneDeep(this.cosmetics);
+      }else{
+        return this.cosmetics.filter((val)=>{
+          return val.category === this.code
+        })
+      }
+    }
   },
 }
 </script>
