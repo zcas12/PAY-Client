@@ -6,7 +6,7 @@
           v-for="(menu,index) in menus"
           :key="index"
         >
-          <nuxt-link :to="menu.url">{{menu.title}}</nuxt-link>
+          <nuxt-link :to="{path:menu.url, query:{code:menu.code}}">{{menu.title}}</nuxt-link>
         </li>
       </ul>
     </div>
@@ -17,11 +17,11 @@ export default {
   data(){
     return{
       menus:[
-        {title:"menu1", url:"menu1"},
-        {title:"menu2", url:"menu2"},
-        {title:"menu3", url:"menu3"},
-        {title:"menu4", url:"menu4"},
-        {title:"menu5", url:"menu5"},
+        {title:"전체", url:"product", code:'total'},
+        {title:"스킨케어", url:"product", code:'skin'},
+        {title:"클렌징", url:"product", code:'cleansing'},
+        {title:"샴푸/린스", url:"product", code:'shampoo'},
+        {title:"트리트먼트/팩", url:"product", code:'treatments'},
       ]
 
 

@@ -2,7 +2,7 @@
   <header id="header">
     <div class="header-wrap">
       <h1 id="global-logo" class="w-250p h-50p">
-        <nuxt-link to="/menu1">
+        <nuxt-link to="/product">
           <el-image
             :src="logo"
             fit="cover"
@@ -19,7 +19,7 @@
       </div>
       <ul class="my-menu-area">
         <li><nuxt-link to="/cart">장바구니</nuxt-link></li>
-        <li></li>
+        <li><nuxt-link to="/cart">마이페이지</nuxt-link></li>
       </ul>
     </div>
     <div class="header-block">
@@ -51,7 +51,7 @@ export default {
   .header-wrap {
     height: 90px;
     width: 1020px;
-    background: antiquewhite;
+    background: transparent;
     h1{
       float: left;
       margin-top: 30px;
@@ -77,9 +77,10 @@ export default {
     .my-menu-area{
       float: right;
       margin-top: 6px;
-      background: aqua;
+      background: transparent;
       li{
         float: left;
+        text-align: center;
         position: relative;
         height: 65px;
         padding-top: 20px;
@@ -99,9 +100,9 @@ export default {
 
   }
   .header-block{
-    position: relative;
+    /*position: relative;
     border-top: 1px solid #e5e5e5;
-    z-index: 1
+    z-index: 1*/
   }
 }
 </style>
