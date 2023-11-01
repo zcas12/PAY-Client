@@ -116,6 +116,7 @@ export default {
         brand: this.prd.brand,
         name: this.prd.name,
         quantity: this.num,
+        src: this.prd.src,
         price: this.prd.price,
         shippingInfo: '일반배송'
       }

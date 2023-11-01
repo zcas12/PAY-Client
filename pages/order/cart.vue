@@ -15,8 +15,22 @@
       <el-table-column
         prop="name"
         label="상품 정보"
-        min-width="350"
+        min-width="250"
       >
+        <template slot-scope="scope">
+          <div class="prd_info">
+            <div class="prd_img">
+              <img
+                :src="scope.row.src"
+                alt="장바구니 상품 임시 이미지"
+              >
+            </div>
+            <div class="prd_name">
+              <span>{{scope.row.brand}}</span>
+              <p>{{scope.row.name}}</p>
+            </div>
+          </div>
+        </template>
       </el-table-column>
       <el-table-column
         prop="price"
@@ -145,6 +159,52 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.prd_info{
+  display: table-cell;
+  position: relative;
+  height: 145px;
+  padding: 30px 30px 30px 125px;
+  border-left: 0;
+  text-align: left;
+  vertical-align: middle;
+}
+.prd_img {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 125px;
+  height: 85px;
+  margin-top: -42px;
+  text-align: center;
+  img {
+    width: auto!important;
+    max-width: 85px;
+    height: auto!important;
+    max-height: 85px;
+  }
+}
+.prd_name{
+  display: inline-block;
+  margin-bottom: 5px;
+  span{
+    display: block;
+    margin-bottom: 4px;
+    color: #777;
+    font-weight: 700;
+  }
+  p{
+    overflow: hidden;
+    max-height: 36px;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    word-break: normal;
+    font-size: 14px;
+    line-height: 18px;
+    color: #000;
+  }
+}
 .title-box{
   overflow: hidden;
   width: 100%;
