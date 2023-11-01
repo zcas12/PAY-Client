@@ -100,14 +100,14 @@ export default {
     }
   },
   computed:{
-    ...mapGetters('cart',['cartList']),
+    ...mapGetters('order',['cartList']),
     totalPrice(){
       const result = this.prd?.price * this.num
       return result ? result : 0
     }
   },
   methods:{
-    ...mapMutations('cart',['setCartList','addCart']),
+    ...mapMutations('order',['setCartList','addCart']),
     addToCart(){
       const chk = this.$_.findIndex(this.cartList,{'id' : this.prd.id})
       const param = {

@@ -87,7 +87,7 @@ export default {
     }
   },
   computed:{
-    ...mapGetters('cart',['cartList']),
+    ...mapGetters('order',['cartList']),
     tableList(){
       return this.$_.cloneDeep(this.cartList)
     },
@@ -112,7 +112,7 @@ export default {
     }
   },
   methods:{
-    ...mapMutations('cart',['deleteCart']),
+    ...mapMutations('order',['deleteCart']),
     /*테이블 셀렉트 이벤트*/
     handleSelectionChange(val) {
       this.multipleSelection = val;
