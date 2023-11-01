@@ -6,6 +6,7 @@
       @selection-change="handleSelectionChange"
     >
       <div slot="empty">
+        장바구니에 저장된 상품이 없습니다.
       </div>
       <el-table-column
         type="selection"
@@ -14,6 +15,7 @@
       <el-table-column
         prop="name"
         label="상품 정보"
+        min-width="350"
       >
       </el-table-column>
       <el-table-column
@@ -38,9 +40,12 @@
         label="배송정보">
       </el-table-column>
     </el-table>
+
     <div class="price-info">
       <div class="btn-area">
-        <button type="button" id="partDelBtn1" @click="deleteSelection()"><span>선택상품 삭제</span></button>
+        <button type="button" id="partDelBtn1" @click="deleteSelection()">
+          <span>선택상품 삭제</span>
+        </button>
         <!--        <button type="button" id="soldOutDelBtn1"><span>품절상품 삭제</span></button>-->
       </div>
       <div class="sum-price">총 판매가
@@ -71,13 +76,6 @@ import {mapGetters,mapMutations} from "vuex";
 export default {
   data() {
     return {
-      tableFields:[
-        {label:"상품 정보", prop:"productInfo"},
-        {label:"판매가", prop:"price"},
-        {label:"수량", prop:"quantity"},
-        {label:"배송 정보", prop:"shippingInfo"},
-        {label:"선택", prop:"actions"},
-      ],
       multipleSelection: []
     }
   },
@@ -112,7 +110,7 @@ export default {
     }
   },
   methods:{
-    ...mapMutations('order',['deleteCart']),
+    ...mapMutations('order',['deleteCart','setOrderList']),
     /*테이블 셀렉트 이벤트*/
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -121,6 +119,7 @@ export default {
     selectionPurchase(){
       console.log(this.multipleSelection)
       if (this.multipleSelection.length > 0){
+        this.setOrderList(this.multipleSelection)
         this.$router.push({name:"order-payment"});
       }else{
         alert("주문가능한 상품이 없습니다.");
@@ -130,6 +129,7 @@ export default {
     totalPurchase(){
       console.log(this.tableList)
       if (this.tableList.length > 0){
+        this.setOrderList(this.tableList)
         this.$router.push({name:"order-payment"});
       }else{
         alert("주문가능한 상품이 없습니다.");

@@ -1,6 +1,6 @@
 export const state = () => ({
-  cartList:[
-  ]
+  cartList:[],
+  orderList:[]
 })
 export const mutations = {
   /*장바구니 제품 추가*/
@@ -21,11 +21,16 @@ export const mutations = {
     state.cartList = state.cartList.filter(cart =>{
       return data.id !== cart.id
     })
-  }
+  },
+  /*주문목록 추가*/
+  setOrderList(state, data) {
+    state.orderList = data;
+  },
 }
 export const actions = {
 
 }
 export const getters = {
   cartList: (state) => state.cartList,
+  orderList: (state) => state.orderList,
 }
