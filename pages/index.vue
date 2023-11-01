@@ -6,6 +6,9 @@
 
 <script>
 export default {
-  name: 'IndexPage'
+  name: 'IndexPage',
+  middleware(context) {
+    return context.redirect({ name: 'product' })
+  }
 }
 </script>
