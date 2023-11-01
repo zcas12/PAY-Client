@@ -6,7 +6,12 @@
           v-for="(menu,index) in menus"
           :key="index"
         >
-          <nuxt-link :to="{path:menu.url, query:{code:menu.code}}">{{menu.title}}</nuxt-link>
+          <nuxt-link
+            :to="{path:menu.url, query:{code:menu.code}}"
+            :class="{'active': code === menu.code}"
+          >
+            {{menu.title}}
+          </nuxt-link>
         </li>
       </ul>
     </div>
@@ -23,9 +28,12 @@ export default {
         {title:"메이크업", url:"/product", code:'makeup'},
         {title:"트리트먼트/팩", url:"/product", code:'treatments'},
       ]
-
-
     }
+  },
+  computed:{
+    code(){
+      return this.$route.query.code ? this.$route.query.code : 'total';
+    },
   }
 }
 </script>
@@ -58,6 +66,9 @@ export default {
           font-size: 16px;
           font-weight: 700;
           letter-spacing: -.04em;
+        }
+        .active{
+          color: #e02020;
         }
         a:hover {
           color: #e02020;
