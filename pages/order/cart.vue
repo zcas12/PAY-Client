@@ -1,20 +1,12 @@
 <template>
   <el-container direction="vertical" class="contents">
-    <div class="title-box">
-      <h1>
-        장바구니
-      </h1>
-      <ul class="step-list">
-        <li class="on"><span class="step_num tx_num">1</span> 장바구니</li><!-- 현재단계 li에 클래스 on과 <span class="hide">현재단계</span> 넣어주세요 -->
-        <li><span class="step_num tx_num">2</span> 주문/결제</li>
-        <li class="last"><span class="step_num tx_num">3 </span> 주문완료</li>
-      </ul>
-    </div>
     <el-table
       ref="multipleTable"
       :data="tableList"
       @selection-change="handleSelectionChange"
     >
+      <div slot="empty">
+      </div>
       <el-table-column
         type="selection"
         width="55">
@@ -49,7 +41,7 @@
     <div class="price-info">
       <div class="btn-area">
         <button type="button" id="partDelBtn1" @click="deleteSelection()"><span>선택상품 삭제</span></button>
-<!--        <button type="button" id="soldOutDelBtn1"><span>품절상품 삭제</span></button>-->
+        <!--        <button type="button" id="soldOutDelBtn1"><span>품절상품 삭제</span></button>-->
       </div>
       <div class="sum-price">총 판매가
         <span class="tx_num">{{ selectPrice | comma }}</span>원
@@ -128,21 +120,31 @@ export default {
     /*선택 구매버튼*/
     selectionPurchase(){
       console.log(this.multipleSelection)
+      if (this.multipleSelection.length > 0){
+        this.$router.push({name:"order-payment"});
+      }else{
+        alert("주문가능한 상품이 없습니다.");
+      }
     },
     /*전체 구매*/
     totalPurchase(){
       console.log(this.tableList)
+      if (this.tableList.length > 0){
+        this.$router.push({name:"order-payment"});
+      }else{
+        alert("주문가능한 상품이 없습니다.");
+      }
     },
     /*선택 삭제*/
     deleteSelection(){
       this.multipleSelection.forEach((val)=>{
-        this.deleteCart(val)
+        this.deleteCart(val);
       })
     }
   }
 }
 </script>
-<style>
+<style lang="scss" scoped>
 .title-box{
   overflow: hidden;
   width: 100%;

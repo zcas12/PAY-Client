@@ -127,7 +127,7 @@ export default {
       alert("장바구니에 추가했습니다.")
     },
     purchase(){
-      this.$router.push({name:"cart"})
+      this.$router.push({name:"order-cart"})
     }
   }
 }

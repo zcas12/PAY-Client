@@ -18,8 +18,8 @@
         </div>
       </div>
       <ul class="my-menu-area">
-        <li><nuxt-link to="/cart">장바구니</nuxt-link></li>
-        <li><nuxt-link to="/cart">마이페이지</nuxt-link></li>
+        <li><nuxt-link to="/order/cart">장바구니</nuxt-link></li>
+        <li><nuxt-link to="/order/cart">마이페이지</nuxt-link></li>
       </ul>
     </div>
     <div class="header-block">
