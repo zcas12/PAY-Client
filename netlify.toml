@@ -1,6 +1,6 @@
 [[redirects]]
 from = "/gw/*"
-to = "https://stg-spl.kcp.co.kr/api/:splat"
+to = "https://stg-spl.kcp.co.kr/gw/:splat"
 status = 200
 force = true
 headers = {X-From = "Netlify"}
