@@ -47,10 +47,11 @@
         <ul class="payment_info_form" id="payMethodList">
           <li class="bg_area">
             <el-radio-group v-model="payMethod">
-              <el-radio label="CARD">신용카드</el-radio>
-              <el-radio label="BANK">계좌이체</el-radio>
-              <el-radio label="VCNT">가상계좌</el-radio>
-              <el-radio label="MOBX">휴대폰</el-radio>
+              <el-radio label="100000000000">신용카드</el-radio>
+              <el-radio label="010000000000">계좌이체</el-radio>
+              <el-radio label="001000000000">가상계좌</el-radio>
+              <el-radio label="000100000000">포인트</el-radio>
+              <el-radio label="000010000000">휴대폰</el-radio>
             </el-radio-group>
           </li>
         </ul>
@@ -93,6 +94,14 @@
         </ul>
       </div>
     </div>
+    <form id="order_info" name="order_info">
+      <input type="hidden" name="site_cd" value="T0000" />
+      <input type="hidden" name="site_name" value="TEST SITE" />
+      <input type="hidden" name="ordr_idxx" value="TEST1234567890" />
+      <input type="hidden" name="pay_method" v-model="payMethod" />
+      <input type="hidden" name="good_mny" v-model="totalPrice" />
+      <input type="hidden" name="good_name" v-model="goodName" />
+    </form>
   </div>
 </template>
 <script>
@@ -101,7 +110,7 @@ import {mapGetters} from "vuex";
 export default {
   data() {
     return {
-      payMethod: "CARD",
+      payMethod: "100000000000",
       termsCheck:false
     }
   },
@@ -125,13 +134,48 @@ export default {
     /* 선택된 상품 가격 + 배송비*/
     totalPrice(){
       return this.selectPrice > 0 ? this.selectPrice + this.deliveryFee : 0
+    },
+    goodName(){
+      return this.orderList.length > 1
+             ? this.orderList[0]?.name + '외 ' + this.orderList.length - 1
+             : this.orderList[0]?.name
     }
   },
   methods:{
     /*결제하기 버튼*/
     payClick(){
       if(this.termsCheck){
-        alert("결제")
+        /*
+        ==================필수======================
+        site_cd 상점코드:  T0000
+        ordr_idxx 주문번호:  TEST1234567890
+        pay_method 결제수단:  100000000000
+        good_mny 요청금액:  1004
+        good_name 상품명:  운동화
+        ==================선택======================
+        상점이름:  TEST SITE
+        주문자:  홍길동
+        주문자 이메일:  test@test.co.kr
+        주문자 전화번호:  02-0000-0000
+        주문자 휴대번호:  010-0000-0000*/
+/*        const param = {
+          site_cd: 'T0000',
+          ordr_idxx: 'TEST1234567890',
+          pay_method: this.payMethod,
+          good_mny: this.totalPrice,
+          good_name: '화장품'
+        }*/
+
+        const form  = document.getElementById('order_info');
+        console.log(form)
+        try
+        {
+          KCP_Pay_Execute_Web( form );
+        }
+        catch (e)
+        {
+          /* IE 에서 결제 정상종료시 throw로 스크립트 종료 */
+        }
       }else{
         alert("약관에 동의해주세요.")
       }

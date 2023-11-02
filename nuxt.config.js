@@ -19,7 +19,8 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon_kcp.ico' }
     ],
     script: [
-      { type: 'text/javascript', src: 'http://10.0.0.106:8080/brpay.js' }
+      /*{ type: 'text/javascript', src: 'http://10.0.0.106:8080/brpay.js' }*/
+      { type: 'text/javascript', src: 'https://testspay.kcp.co.kr/plugin/kcp_spay_hub.js' }
     ]
   },
   loading:false,
