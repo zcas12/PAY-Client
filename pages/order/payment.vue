@@ -158,13 +158,6 @@ export default {
         주문자 이메일:  test@test.co.kr
         주문자 전화번호:  02-0000-0000
         주문자 휴대번호:  010-0000-0000*/
-/*        const param = {
-          site_cd: 'T0000',
-          ordr_idxx: 'TEST1234567890',
-          pay_method: this.payMethod,
-          good_mny: this.totalPrice,
-          good_name: '화장품'
-        }*/
 
         const form  = document.getElementById('order_info');
         console.log(form)
