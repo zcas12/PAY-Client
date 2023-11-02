@@ -145,9 +145,9 @@ export default {
     /*결제하기 버튼*/
     payClick(){
       if(!this.termsCheck) {
-        alert("약관에 동의해주세요.")
-      }else if(!this.orderList){
-        alert("주문상품 ")
+        alert("약관에 동의해주세요.");
+      }else if(this.orderList.length < 1){
+        alert("주문상품 오류");
       }else{
         /*
           ==================필수======================
