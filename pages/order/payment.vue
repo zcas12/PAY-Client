@@ -1,6 +1,10 @@
 <template>
   <div>
+    <div v-if="loading" class="overlay">
+      <i class="el-icon-loading loading"></i>
+    </div>
     <el-table
+      v-if="!loading"
       :data="orderList"
       height="450"
     >
@@ -39,7 +43,10 @@
       </el-table-column>
 
     </el-table>
-    <div class="order_payment_box">
+    <div
+      v-if="!loading"
+      class="order_payment_box"
+    >
       <div class="left_area">
         <div class="title_wrap" id="payMethod_div">
           <h2 class="sub-title2">결제수단 선택</h2>
@@ -97,7 +104,7 @@
     <form id="order_info" name="order_info">
       <input type="hidden" name="site_cd" value="T0000" />
       <input type="hidden" name="site_name" value="TEST SITE" />
-      <input type="hidden" name="ordr_idxx" value="TEST1234567890" />buyr_name
+      <input type="hidden" name="ordr_idxx" value="TEST1234567890" />
       <input type="hidden" name="pay_method" v-model="payMethod" />
       <input type="hidden" name="buyr_name" value="이재혁" />
       <input type="hidden" name="good_mny" v-model="totalPrice" />
@@ -118,6 +125,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      loading:false,
       payMethod: "100000000000",
       termsCheck:false,
       res_cd:'',
@@ -151,8 +159,9 @@ export default {
       return this.selectPrice > 0 ? this.selectPrice + this.deliveryFee : 0
     },
     goodName(){
-      return this.orderList.length > 1
-             ? this.orderList[0]?.name + '외 ' + this.orderList.length - 1
+      const length = this.orderList.length
+      return length > 1
+             ? this.orderList[0]?.name + ' 외 ' + (length - 1)+'건'
              : this.orderList[0]?.name
     }
   },
@@ -210,6 +219,7 @@ export default {
     },
     /*인증완료시 요청*/
     completePayment(){
+      this.loading = true;
       const KCP_CERT_INFO = '-----BEGIN CERTIFICATE-----MIIDgTCCAmmgAwIBAgIHBy4lYNG7ojANBgkqhkiG9w0BAQsFADBzMQswCQYDVQQGEwJLUjEOMAwGA1UECAwFU2VvdWwxEDAOBgNVBAcMB0d1cm8tZ3UxFTATBgNVBAoMDE5ITktDUCBDb3JwLjETMBEGA1UECwwKSVQgQ2VudGVyLjEWMBQGA1UEAwwNc3BsLmtjcC5jby5rcjAeFw0yMTA2MjkwMDM0MzdaFw0yNjA2MjgwMDM0MzdaMHAxCzAJBgNVBAYTAktSMQ4wDAYDVQQIDAVTZW91bDEQMA4GA1UEBwwHR3Vyby1ndTERMA8GA1UECgwITG9jYWxXZWIxETAPBgNVBAsMCERFVlBHV0VCMRkwFwYDVQQDDBAyMDIxMDYyOTEwMDAwMDI0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAppkVQkU4SwNTYbIUaNDVhu2w1uvG4qip0U7h9n90cLfKymIRKDiebLhLIVFctuhTmgY7tkE7yQTNkD+jXHYufQ/qj06ukwf1BtqUVru9mqa7ysU298B6l9v0Fv8h3ztTYvfHEBmpB6AoZDBChMEua7Or/L3C2vYtU/6lWLjBT1xwXVLvNN/7XpQokuWq0rnjSRThcXrDpWMbqYYUt/CL7YHosfBazAXLoN5JvTd1O9C3FPxLxwcIAI9H8SbWIQKhap7JeA/IUP1Vk4K/o3Yiytl6Aqh3U1egHfEdWNqwpaiHPuM/jsDkVzuS9FV4RCdcBEsRPnAWHz10w8CX7e7zdwIDAQABox0wGzAOBgNVHQ8BAf8EBAMCB4AwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEAg9lYy+dM/8Dnz4COc+XIjEwr4FeC9ExnWaaxH6GlWjJbB94O2L26arrjT2hGl9jUzwd+BdvTGdNCpEjOz3KEq8yJhcu5mFxMskLnHNo1lg5qtydIID6eSgew3vm6d7b3O6pYd+NHdHQsuMw5S5z1m+0TbBQkb6A9RKE1md5/Yw+NymDy+c4NaKsbxepw+HtSOnma/R7TErQ/8qVioIthEpwbqyjgIoGzgOdEFsF9mfkt/5k6rR0WX8xzcro5XSB3T+oecMS54j0+nHyoS96/llRLqFDBUfWn5Cay7pJNWXCnw4jIiBsTBa3q95RVRyMEcDgPwugMXPXGBwNoMOOpuQ==-----END CERTIFICATE-----';
 
       if( this.res_cd === "0000" ){
@@ -222,6 +232,7 @@ export default {
           ordr_mony : this.totalPrice// 결제요청금액   ** 1 원은 실제로 업체에서 결제하셔야 될 원 금액을 넣어주셔야 합니다. 결제금액 유효성 검증 **
         };
         this.paymentV1(reqData).then((result)=>{
+          this.loading = false;
           this.$router.push({ name: 'order-finish',query: {result: result}})
         })
 /*        fetch("https://stg-spl.kcp.co.kr/gw/enc/v1/payment", {
@@ -385,6 +396,28 @@ export default {
         }
       }
     }
+  }
+}
+.overlay{
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  opacity: 0.7;
+  .loading{
+    font-size: 24px;
+    color: cornflowerblue;
+  }
+  .loading-text{
+    font-size: 14px;
+    color: cornflowerblue;
   }
 }
 </style>
