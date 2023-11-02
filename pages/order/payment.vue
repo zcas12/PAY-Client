@@ -144,23 +144,27 @@ export default {
   methods:{
     /*결제하기 버튼*/
     payClick(){
-      if(this.termsCheck){
+      if(!this.termsCheck) {
+        alert("약관에 동의해주세요.")
+      }else if(!this.orderList){
+        alert("주문상품 ")
+      }else{
         /*
-        ==================필수======================
-        site_cd 상점코드:  T0000
-        ordr_idxx 주문번호:  TEST1234567890
-        pay_method 결제수단:  100000000000
-        good_mny 요청금액:  1004
-        good_name 상품명:  운동화
-        ==================선택======================
-        상점이름:  TEST SITE
-        주문자:  홍길동
-        주문자 이메일:  test@test.co.kr
-        주문자 전화번호:  02-0000-0000
-        주문자 휴대번호:  010-0000-0000*/
+          ==================필수======================
+          site_cd 상점코드:  T0000
+          ordr_idxx 주문번호:  TEST1234567890
+          pay_method 결제수단:  100000000000
+          good_mny 요청금액:  1004
+          good_name 상품명:  운동화
+          ==================선택======================
+          상점이름:  TEST SITE
+          주문자:  홍길동
+          주문자 이메일:  test@test.co.kr
+          주문자 전화번호:  02-0000-0000
+          주문자 휴대번호:  010-0000-0000
+        */
 
         const form  = document.getElementById('order_info');
-        console.log(form)
         try
         {
           KCP_Pay_Execute_Web( form );
@@ -169,8 +173,6 @@ export default {
         {
           /* IE 에서 결제 정상종료시 throw로 스크립트 종료 */
         }
-      }else{
-        alert("약관에 동의해주세요.")
       }
     }
   }
