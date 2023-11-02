@@ -151,13 +151,15 @@ export default {
       })
       return this.$_.reduce(price, (acc, n) => acc + n, 0);
     },
+    /* 배송비 */
     deliveryFee(){
       return this.selectPrice ? 2500 : 0
     },
-    /* 선택된 상품 가격 + 배송비*/
+    /* 선택된 상품 가격 + 배송비 */
     totalPrice(){
       return this.selectPrice > 0 ? this.selectPrice + this.deliveryFee : 0
     },
+    /*상품명*/
     goodName(){
       const length = this.orderList.length
       return length > 1
@@ -166,6 +168,7 @@ export default {
     }
   },
   watch:{
+    /*인증 완료시 파라미터 바인딩*/
     '$route.query': {
       handler(query) {
         this.res_cd = query.res_cd;
@@ -179,7 +182,6 @@ export default {
       },
       deep: true,
       immediate: true
-
     }
   },
   methods:{
@@ -224,11 +226,11 @@ export default {
 
       if( this.res_cd === "0000" ){
         const reqData = {
-          tran_cd : this.f_get_parm(this.tran_cd),
+          tran_cd : this.isEmpty(this.tran_cd),
           site_cd : 'T0000',
           kcp_cert_info : KCP_CERT_INFO,
-          enc_data : this.f_get_parm(this.enc_data),
-          enc_info : this.f_get_parm(this.enc_info),
+          enc_data : this.isEmpty(this.enc_data),
+          enc_info : this.isEmpty(this.enc_info),
           ordr_mony : this.totalPrice// 결제요청금액   ** 1 원은 실제로 업체에서 결제하셔야 될 원 금액을 넣어주셔야 합니다. 결제금액 유효성 검증 **
         };
         this.paymentV1(reqData).then((result)=>{
@@ -257,7 +259,7 @@ export default {
       }
 
     },
-    f_get_parm(val) {
+    isEmpty(val) {
       if ( val == null ) val = '';
       return val;
     }
