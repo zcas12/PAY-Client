@@ -56,7 +56,16 @@ export default {
   modules: [
     "@nuxtjs/axios"
   ],
-
+  axios: {
+    proxy: true,
+    credentials: true
+  },
+  proxy: {
+    "/gw": {
+      target: "https://stg-spl.kcp.co.kr",
+      changeOrigin: true // cross origin 허용
+    }
+  },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [/^element-ui/]

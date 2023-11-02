@@ -99,19 +99,34 @@
       <input type="hidden" name="site_name" value="TEST SITE" />
       <input type="hidden" name="ordr_idxx" value="TEST1234567890" />
       <input type="hidden" name="pay_method" v-model="payMethod" />
+
       <input type="hidden" name="good_mny" v-model="totalPrice" />
       <input type="hidden" name="good_name" v-model="goodName" />
+      <input type="hidden" name="res_cd"          v-model="res_cd"/>
+      <input type="hidden" name="res_msg"         v-model="res_msg"/>
+      <input type="hidden" name="enc_info"        v-model="enc_info"/>
+      <input type="hidden" name="enc_data"        v-model="enc_data"/>
+      <input type="hidden" name="ret_pay_method"  v-model="ret_pay_method"/>
+      <input type="hidden" name="tran_cd"         v-model="tran_cd"/>
+      <input type="hidden" name="use_pay_method"  v-model="use_pay_method"/>
     </form>
   </div>
 </template>
 <script>
-import {mapGetters} from "vuex";
-
+import {mapGetters,mapActions} from "vuex";
+import axios from "axios";
 export default {
   data() {
     return {
       payMethod: "100000000000",
-      termsCheck:false
+      termsCheck:false,
+      res_cd:'',
+      enc_info:'',
+      enc_data:'',
+      res_msg:'',
+      tran_cd:'',
+      ret_pay_method:'',
+      use_pay_method:''
     }
   },
   filters:{
@@ -141,7 +156,25 @@ export default {
              : this.orderList[0]?.name
     }
   },
+  watch:{
+    '$route.query': {
+      handler(query) {
+        this.res_cd = query.res_cd;
+        this.enc_info = query.enc_info;
+        this.enc_data = query.enc_data;
+        this.res_msg = query.res_msg;
+        this.tran_cd = query.tran_cd;
+        this.ret_pay_method = query.ret_pay_method;
+        this.use_pay_method = query.use_pay_method;
+        if (query.res_cd) this.completePayment();
+      },
+      deep: true,
+      immediate: true
+
+    }
+  },
   methods:{
+    ...mapActions('order',['paymentV1']),
     /*결제하기 버튼*/
     payClick(){
       if(!this.termsCheck) {
@@ -174,7 +207,49 @@ export default {
           /* IE 에서 결제 정상종료시 throw로 스크립트 종료 */
         }
       }
+    },
+    completePayment(){
+      const KCP_CERT_INFO = '-----BEGIN CERTIFICATE-----MIIDgTCCAmmgAwIBAgIHBy4lYNG7ojANBgkqhkiG9w0BAQsFADBzMQswCQYDVQQGEwJLUjEOMAwGA1UECAwFU2VvdWwxEDAOBgNVBAcMB0d1cm8tZ3UxFTATBgNVBAoMDE5ITktDUCBDb3JwLjETMBEGA1UECwwKSVQgQ2VudGVyLjEWMBQGA1UEAwwNc3BsLmtjcC5jby5rcjAeFw0yMTA2MjkwMDM0MzdaFw0yNjA2MjgwMDM0MzdaMHAxCzAJBgNVBAYTAktSMQ4wDAYDVQQIDAVTZW91bDEQMA4GA1UEBwwHR3Vyby1ndTERMA8GA1UECgwITG9jYWxXZWIxETAPBgNVBAsMCERFVlBHV0VCMRkwFwYDVQQDDBAyMDIxMDYyOTEwMDAwMDI0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAppkVQkU4SwNTYbIUaNDVhu2w1uvG4qip0U7h9n90cLfKymIRKDiebLhLIVFctuhTmgY7tkE7yQTNkD+jXHYufQ/qj06ukwf1BtqUVru9mqa7ysU298B6l9v0Fv8h3ztTYvfHEBmpB6AoZDBChMEua7Or/L3C2vYtU/6lWLjBT1xwXVLvNN/7XpQokuWq0rnjSRThcXrDpWMbqYYUt/CL7YHosfBazAXLoN5JvTd1O9C3FPxLxwcIAI9H8SbWIQKhap7JeA/IUP1Vk4K/o3Yiytl6Aqh3U1egHfEdWNqwpaiHPuM/jsDkVzuS9FV4RCdcBEsRPnAWHz10w8CX7e7zdwIDAQABox0wGzAOBgNVHQ8BAf8EBAMCB4AwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEAg9lYy+dM/8Dnz4COc+XIjEwr4FeC9ExnWaaxH6GlWjJbB94O2L26arrjT2hGl9jUzwd+BdvTGdNCpEjOz3KEq8yJhcu5mFxMskLnHNo1lg5qtydIID6eSgew3vm6d7b3O6pYd+NHdHQsuMw5S5z1m+0TbBQkb6A9RKE1md5/Yw+NymDy+c4NaKsbxepw+HtSOnma/R7TErQ/8qVioIthEpwbqyjgIoGzgOdEFsF9mfkt/5k6rR0WX8xzcro5XSB3T+oecMS54j0+nHyoS96/llRLqFDBUfWn5Cay7pJNWXCnw4jIiBsTBa3q95RVRyMEcDgPwugMXPXGBwNoMOOpuQ==-----END CERTIFICATE-----';
+
+      if( this.res_cd === "0000" ){
+        const reqData = {
+          tran_cd : this.f_get_parm(this.tran_cd),
+          site_cd : 'T0000',
+          kcp_cert_info : KCP_CERT_INFO,
+          enc_data : this.f_get_parm(this.enc_data),
+          enc_info : this.f_get_parm(this.enc_info),
+          ordr_mony : this.totalPrice// 결제요청금액   ** 1 원은 실제로 업체에서 결제하셔야 될 원 금액을 넣어주셔야 합니다. 결제금액 유효성 검증 **
+        };
+        this.paymentV1(reqData).then((result)=>{
+          this.$router.push({ name: 'order-finish',query: {result: result}})
+        })
+/*        fetch("https://stg-spl.kcp.co.kr/gw/enc/v1/payment", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(req_data),
+        })
+        // 결제 API RES
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+          console.log(data)
+          this.$router.push({ name: 'order-finish', query: {result: data} })
+        });*/
+      }else {
+        alert( "[" + this.res_cd + "] " + this.res_msg );
+
+        closeEvent();
+      }
+
+    },
+    f_get_parm(val) {
+      if ( val == null ) val = '';
+      return val;
     }
+
   }
 }
 </script>

@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const state = () => ({
   cartList:[],
   orderList:[]
@@ -28,7 +30,9 @@ export const mutations = {
   },
 }
 export const actions = {
-
+  async paymentV1({},reqData){
+    return await axios.post('/gw/enc/v1/payment',reqData);
+  }
 }
 export const getters = {
   cartList: (state) => state.cartList,
