@@ -1,0 +1,10 @@
+[[redirects]]
+from = "/gw/*"
+to = "https://stg-spl.kcp.co.kr/api/:splat"
+status = 200
+force = true
+headers = {X-From = "Netlify"}
+[[headers]]
+for = "/*"
+[headers.values]
+Access-Control-Allow-Origin = "*"
