@@ -10,7 +10,6 @@
     </ul>
     <el-pagination
       :page-size="pageSize"
-      :pager-count="10"
       layout="prev, pager, next"
       :total="total"
       @current-change="setPage"
