@@ -1,10 +1,10 @@
 <template>
   <div>
-    <no-ssr>
+    <client-only>
       <div v-if="loading" class="overlay">
         <i class="el-icon-loading loading"></i>
       </div>
-    </no-ssr>
+    </client-only>
     <el-table
       :data="orderList"
       height="450"
