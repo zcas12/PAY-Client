@@ -20,7 +20,7 @@ export default {
   watch: {
     '$route.query': {
       handler: function(query) {
-        this.result = query.result
+        this.result = query?.result
       },
       deep: true,
       immediate: true

@@ -1,9 +1,8 @@
 <template>
   <div>
-    <div v-if="loading" class="overlay">
+<!--    <div v-show="loading" class="overlay">
       <i class="el-icon-loading loading"></i>
-    </div>
-
+    </div>-->
     <el-table
       :data="orderList"
       height="450"
