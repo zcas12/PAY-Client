@@ -3,7 +3,7 @@
     <div v-if="loading" class="overlay">
       <i class="el-icon-loading loading"></i>
     </div>
-    <!--주문목록-->
+
     <el-table
       v-if="!loading"
       :data="orderList"
@@ -44,13 +44,12 @@
       </el-table-column>
 
     </el-table>
-    <!--주문목록 end-->
+
 
     <div
       v-if="!loading"
       class="order_payment_box"
     >
-      <!--결제수단-->
       <div class="left_area">
         <div class="title_wrap" id="payMethod_div">
           <h2 class="sub-title2">결제수단 선택</h2>
@@ -70,8 +69,7 @@
           <el-checkbox v-model="termsCheck">주문 상품정보 및 결제대행 서비스 이용약관에 모두 동의하십니까?</el-checkbox>
         </div>
       </div>
-      <!--결제수단 end-->
-      <!--결제금액 정보-->
+
       <div class="right_area">
         <h2 class="sub-title2">최종 결제정보</h2>
         <ul class="total_payment_box">
@@ -106,7 +104,6 @@
           </li>
         </ul>
       </div>
-      <!--결제금액 정보 end-->
     </div>
 
     <form id="order_info" name="order_info">
@@ -142,7 +139,7 @@ export default {
       res_msg:'',
       tran_cd:'',
       ret_pay_method:'',
-      use_pay_method:''
+      use_pay_method:'',
     }
   },
   filters:{
