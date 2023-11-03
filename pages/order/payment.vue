@@ -5,7 +5,6 @@
     </div>
 
     <el-table
-      v-if="!loading"
       :data="orderList"
       height="450"
     >
@@ -46,10 +45,7 @@
     </el-table>
 
 
-    <div
-      v-if="!loading"
-      class="order_payment_box"
-    >
+    <div class="order_payment_box">
       <div class="left_area">
         <div class="title_wrap" id="payMethod_div">
           <h2 class="sub-title2">결제수단 선택</h2>
