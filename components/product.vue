@@ -97,6 +97,20 @@ export default {
       font-size: 14px;
       text-align: center;
     }
+    .px_name{
+      overflow: hidden;
+      height: 40px;
+      padding: 2px 0;
+      -webkit-box-orient: vertical;
+      line-height: 18px;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      word-break: keep-all;
+      color: #000;
+      font-size: 14px;
+      text-align: center;
+    }
   }
   .prd_price{
     height: 20px;
