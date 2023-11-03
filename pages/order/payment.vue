@@ -273,7 +273,7 @@ export default {
 .prd_info{
   display: table-cell;
   position: relative;
-  height: 145px;
+  height: 110px;
   padding: 30px 30px 30px 125px;
   border-left: 0;
   text-align: left;
