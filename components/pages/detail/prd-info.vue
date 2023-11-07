@@ -73,8 +73,8 @@
       >
         바로구매
       </button>
-      <button class="btnZzim goods_wish">
-      </button>
+<!--      <button class="btnZzim goods_wish">
+      </button>-->
     </div>
   </div>
 </template>
@@ -107,7 +107,7 @@ export default {
     }
   },
   methods:{
-    ...mapMutations('order',['setCartList','addCart']),
+    ...mapMutations('order',['setCartList','addCart','setOrderList']),
     addToCart(){
       const chk = this.$_.findIndex(this.cartList,{'id' : this.prd.id})
       const param = {
@@ -128,7 +128,18 @@ export default {
       alert("장바구니에 추가했습니다.")
     },
     purchase(){
-      this.$router.push({name:"order-cart"})
+      const param = [{
+        id: this.prd.id,
+        code: this.prd.code,
+        brand: this.prd.brand,
+        name: this.prd.name,
+        quantity: this.num,
+        src: this.prd.src,
+        price: this.prd.price,
+        shippingInfo: '일반배송'
+      }]
+      this.setOrderList(param);
+      this.$router.push({name:"order-payment"});
     }
   }
 }
@@ -304,7 +315,7 @@ export default {
   }
   .prd_btn_area{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     overflow: hidden;
     margin: 30px 0 0;
     button{
