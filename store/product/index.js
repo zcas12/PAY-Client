@@ -289,14 +289,18 @@ export const state = () => ({
       src: require('assets/img/product/A0032.jpg'),
       price: 23800
     },
-  ]
+  ],
+  searchKeyword:""
 })
 export const mutations = {
-
+  setKeyword(state, data) {
+    state.searchKeyword = data;
+  },
 }
 export const actions = {
 
 }
 export const getters = {
   cosmetics: (state) => state.cosmetics,
+  searchKeyword: (state) => state.searchKeyword
 }

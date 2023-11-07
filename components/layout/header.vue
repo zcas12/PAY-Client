@@ -12,9 +12,15 @@
       </h1>
       <div class="search_box" >
         <div class="flex align-center justify-center">
-          <el-input v-model="input" class="header-input">
+          <el-input
+            v-model="searchInput"
+            class="header-input"
+            @keyup.native.enter="search()"
+          >
           </el-input>
-          <i class="el-icon-search cursor-pointer"></i>
+          <button id="searchSubmit" @click="search()">
+            <i class="el-icon-search"></i>
+          </button>
         </div>
       </div>
       <ul class="my-menu-area">
@@ -29,12 +35,19 @@
 </template>
 <script>
 import Logo from '@/static/kcp-logo.svg';
+import {mapMutations} from "vuex";
 export default {
   name:"layoutHeader",
   data(){
     return {
-      input:"",
+      searchInput:"",
       logo: Logo
+    }
+  },
+  methods:{
+    ...mapMutations('product',['setKeyword']),
+    search(){
+      this.setKeyword(this.searchInput);
     }
   }
 }
@@ -70,9 +83,24 @@ export default {
         .el-input__inner{
           border: 0;
           background-color: transparent;
+          padding: 0 0 0 15px;
+          width: 90% !important;
         }
       }
-
+      #searchSubmit{
+        position: absolute;
+        top: 7px;
+        right: 18px;
+        width: 23px;
+        height: 23px;
+        text-align: center;
+        border: 0;
+        background-color: transparent;
+        i{
+          color: #868e96;
+          font-size: 1.8em;
+        }
+      }
     }
     .my-menu-area{
       float: right;

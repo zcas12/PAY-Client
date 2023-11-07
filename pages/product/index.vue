@@ -1,6 +1,15 @@
 <template>
   <el-container direction="vertical" class="contents product-box">
-    <ul class="cate_prd_list">
+    <el-empty
+      v-if="categoryProducts.length < 1"
+      description="찾으시는 상품이 없습니다."
+      class="is-empty"
+    >
+    </el-empty>
+    <ul
+      v-else
+      class="cate_prd_list"
+    >
       <li
         v-for="(prd, index) in pagedTableData"
         :key="index"
@@ -31,24 +40,35 @@ export default {
     }
   },
   computed:{
-    ...mapGetters('product',['cosmetics']),
+    ...mapGetters('product',['cosmetics','searchKeyword']),
     code(){
       return this.$route.query.code;
     },
-    product(){
-      if (this.code === 'total' || !this.code){
-        return this.$_.cloneDeep(this.cosmetics);
-      }else{
+    searchProducts(){
+      /*검색어 필터*/
+      if (this.searchKeyword){
         return this.cosmetics.filter((val)=>{
+          return this.$_.includes(val.name, this.searchKeyword);
+        })
+      }else{
+        return this.cosmetics;
+      }
+    },
+    categoryProducts(){
+      /*상품 종류 필터*/
+      if (this.code === 'total' || !this.code){
+        return this.searchProducts;
+      }else{
+        return this.searchProducts.filter((val)=>{
           return val.category === this.code
         })
       }
     },
     pagedTableData() {
-      return this.product.slice(this.pageSize * this.currentPage - this.pageSize, this.pageSize * this.currentPage)
+      return this.categoryProducts.slice(this.pageSize * this.currentPage - this.pageSize, this.pageSize * this.currentPage)
     },
     total(){
-      return this.product.length ? this.product.length: 0
+      return this.categoryProducts.length ? this.categoryProducts.length: 0
     }
   },
   watch:{
@@ -68,13 +88,18 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+
 .product-box{
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  .is-empty{
+    min-height: 650px;
+  }
 }
 .cate_prd_list{
   border-top: 5px solid #FFF;
   border-bottom: 1px solid #ddd;
+  min-height: 650px;
   li{
     position: relative;
     float: left;
