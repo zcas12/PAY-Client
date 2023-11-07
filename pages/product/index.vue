@@ -9,6 +9,7 @@
       </li>
     </ul>
     <el-pagination
+      :current-page="currentPage"
       :page-size="pageSize"
       layout="prev, pager, next"
       :total="total"
@@ -53,7 +54,7 @@ export default {
   watch:{
     '$route.query.code': {
       handler: function() {
-        this.currentPage = 1;
+        this.setPage(1);
       },
       deep: true,
         immediate: true
