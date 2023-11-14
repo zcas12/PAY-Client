@@ -103,7 +103,7 @@
       </div>
     </div>
 
-    <form id="order_info" name="order_info">
+    <form id="order_info" name="order_info" action="/order/finish">
       <input type="hidden" name="site_cd" value="T0000" />
       <input type="hidden" name="site_name" value="TEST SITE" />
       <input type="hidden" name="ordr_idxx" value="TEST1234567890" />
@@ -123,7 +123,7 @@
 </template>
 <script>
 import {mapGetters,mapActions} from "vuex";
-import axios from "axios";
+
 export default {
   data() {
     return {
@@ -138,6 +138,9 @@ export default {
       ret_pay_method:'',
       use_pay_method:'',
     }
+  },
+  created() {
+
   },
   filters:{
     comma(val){
@@ -170,8 +173,8 @@ export default {
     }
   },
   watch:{
-    /*인증 완료시 파라미터 바인딩*/
-    '$route.query': {
+    /*인증 완료시 응답값 바인딩*/
+/*    tran_cd: {
       handler(query) {
         this.res_cd = query.res_cd;
         this.enc_info = query.enc_info;
@@ -180,11 +183,11 @@ export default {
         this.tran_cd = query.tran_cd;
         this.ret_pay_method = query.ret_pay_method;
         this.use_pay_method = query.use_pay_method;
-        if (query.res_cd) this.completePayment();
+        if (query.res_cd && query.tran_cd) this.completePayment();
       },
       deep: true,
       immediate: true
-    }
+    }*/
   },
   methods:{
     ...mapActions('order',['paymentV1']),
@@ -211,12 +214,10 @@ export default {
         */
 
         const form  = document.getElementById('order_info');
-        try
-        {
+        try {
           KCP_Pay_Execute_Web( form );
         }
-        catch (e)
-        {
+        catch (e) {
           /* IE 에서 결제 정상종료시 throw로 스크립트 종료 */
         }
       }
